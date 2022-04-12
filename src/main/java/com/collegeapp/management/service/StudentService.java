@@ -34,9 +34,7 @@ public class StudentService {
     }
 
     public Optional<Student> getStudentById(String id) {
-        Optional<Student> studentById = studentRepository.findStudentById(id);
-        System.out.println("Service" + studentById);
-        return studentById;
+        return studentRepository.findStudentById(id);
     }
 
 }
