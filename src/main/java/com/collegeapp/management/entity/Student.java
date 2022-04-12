@@ -9,24 +9,20 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.time.LocalDate;
+import java.time.Period;
 
 @Entity
 @Table(name = "students")
 public class Student {
 
     @Id
-    @Column(name = "id", columnDefinition = "CHAR", length = 7)
-    @SequenceGenerator(
-            name = "student_sequence",
-            sequenceName = "student_sequence",
-            allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_sequence")
+    @Column(name = "id", columnDefinition = "CHAR(7)")
     private String id;
 
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
     @Column(name = "dni", nullable = false)
@@ -47,13 +43,15 @@ public class Student {
     public Student() {
     }
 
-    public Student(String firstName,
+    public Student(String id,
+                   String firstName,
                    String lastName,
                    String dni,
                    String email,
                    String telephone,
                    String address,
                    LocalDate dob) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dni = dni;
@@ -128,7 +126,7 @@ public class Student {
     }
 
     public Integer getAge() {
-        return age;
+        return Period.between(this.dob, LocalDate.now()).getYears();
     }
 
     public void setAge(Integer age) {
