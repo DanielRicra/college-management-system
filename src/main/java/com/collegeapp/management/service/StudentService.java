@@ -3,7 +3,7 @@ package com.collegeapp.management.service;
 import com.collegeapp.management.entity.Student;
 import com.collegeapp.management.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,18 +23,56 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
-    public Optional<Student> addNewStudent(Student student) {
-        Optional<Student> existingStudent = studentRepository
-                .findStudentByEmail(student.getEmail());
-        if (existingStudent.isPresent()) {
+    public Optional<Student> addStudent(Student student) {
+        if (existsStudentWithEmail(student.getEmail())) {
             return Optional.empty();
         }
-        Student save = studentRepository.save(student);
-        return Optional.of(save);
+        try {
+            Student savedStudent = studentRepository.save(student);
+            return Optional.of(savedStudent);
+        } catch (Exception psqlException) {
+            psqlException.getStackTrace();
+            return Optional.empty();
+        }
+    }
+
+    public boolean existsStudentWithEmail(String email) {
+        return studentRepository.findStudentByEmail(email).isPresent();
     }
 
     public Optional<Student> getStudentById(String id) {
-        return studentRepository.findStudentById(id);
+        return studentRepository.findById(id);
     }
 
+    public boolean deleteStudentById(String id) {
+        boolean existingStudent = studentRepository.findById(id).isPresent();
+        if (existingStudent) {
+            studentRepository.deleteById(id);
+            return true;
+        }
+
+        return false;
+    }
+
+    public Optional<Student> updateStudent(String id, Student student) {
+        boolean existingStudent = getStudentById(id).isPresent();
+
+        if (existingStudent && !existsStudentWithEmail(student.getEmail())) {
+
+            int isUpdated = studentRepository.updateStudent(student.getFirstName(),
+                                                                student.getLastName(),
+                                                                student.getAddress(),
+                                                                student.getDni(),
+                                                                student.getEmail(),
+                                                                student.getDob(),
+                                                                student.getTelephone(),
+                                                                id);
+            if (isUpdated > 0) {
+                student.setId(id);
+                return Optional.of(student);
+            }
+        }
+
+        return Optional.empty();
+    }
 }

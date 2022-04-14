@@ -1,16 +1,14 @@
 package com.collegeapp.management.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import org.springframework.data.domain.Persistable;
+
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
 
 @Entity
 @Table(name = "students")
-public class Student {
+public class Student implements Persistable<String> {
 
     @Id
     @Column(name = "id", columnDefinition = "CHAR(7)")
@@ -37,6 +35,9 @@ public class Student {
     @Transient
     private Integer age;
 
+    @Transient
+    private boolean isNew = true;
+
     public Student() {
     }
 
@@ -56,6 +57,17 @@ public class Student {
         this.telephone = telephone;
         this.address = address;
         this.dob = dob;
+    }
+
+    @Override
+    public boolean isNew() {
+        return this.isNew;
+    }
+
+    @PrePersist
+    @PostLoad
+    void markNotNew() {
+        this.isNew = false;
     }
 
     public String getId() {
