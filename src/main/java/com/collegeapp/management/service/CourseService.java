@@ -24,12 +24,37 @@ public class CourseService {
     }
 
     public Optional<Course> saveCourse(Course course) {
-        boolean existingCourse = courseRepository.findById(course.getId()).isPresent();
+        boolean existingCourse = courseRepository.findById(course.getCourseId()).isPresent();
 
         if (existingCourse) {
             return Optional.empty();
         }
 
         return Optional.of(courseRepository.save(course));
+    }
+
+    public Optional<Course> updateCourse(String courseId, Course course) {
+        int isUpdated = courseRepository.updateCourse(course.getName(),
+                course.getCredits(),
+                course.getDescription(),
+                courseId);
+        if (isUpdated > 0) {
+            course.setCourseId(courseId);
+            return Optional.of(course);
+        }
+        return Optional.empty();
+    }
+
+    public boolean deleteCourseById(String courseId) {
+        boolean existingCourse = courseRepository.findById(courseId).isPresent();
+        if (existingCourse) {
+            courseRepository.deleteById(courseId);
+            return true;
+        }
+        return false;
+    }
+
+    public Optional<Course> getCourseById(String courseId) {
+        return courseRepository.findById(courseId);
     }
 }
