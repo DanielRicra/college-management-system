@@ -10,8 +10,8 @@ import javax.persistence.Table;
 public class Course {
 
     @Id
-    @Column(name = "courseId", nullable = false, updatable = false, columnDefinition = "CHAR(9)")
-    private String id;
+    @Column(name = "course_id", nullable = false, updatable = false, columnDefinition = "CHAR(9)")
+    private String courseId;
 
     @Column(name = "name", length = 80, nullable = false)
     private String name;
@@ -23,7 +23,7 @@ public class Course {
     private Integer credits;
 
     public Course(String id, String name, String description, Integer credits) {
-        this.id = id;
+        this.courseId = id;
         this.name = name;
         this.description = description;
         this.credits = credits;
@@ -32,12 +32,12 @@ public class Course {
     public Course() {
     }
 
-    public String getId() {
-        return id;
+    public String getCourseId() {
+        return courseId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setCourseId(String courseId) {
+        this.courseId = courseId;
     }
 
     public String getName() {
@@ -67,7 +67,7 @@ public class Course {
     @Override
     public String toString() {
         return "Course{" +
-                "id='" + id + '\'' +
+                "id='" + courseId + '\'' +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", credits=" + credits +
