@@ -3,9 +3,9 @@ package com.collegeapp.management.service;
 import com.collegeapp.management.entity.Student;
 import com.collegeapp.management.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,20 +24,19 @@ public class StudentService {
     }
 
     public Optional<Student> addStudent(Student student) {
-        if (existsStudentWithEmail(student.getEmail())) {
-            return Optional.empty();
+        if (notExistsStudentWithEmail(student.getEmail())) {
+            try {
+                Student savedStudent = studentRepository.save(student);
+                return Optional.of(savedStudent);
+            } catch (Exception psqlException) {
+                System.out.println(Arrays.toString(psqlException.getStackTrace()));
+            }
         }
-        try {
-            Student savedStudent = studentRepository.save(student);
-            return Optional.of(savedStudent);
-        } catch (Exception psqlException) {
-            psqlException.getStackTrace();
-            return Optional.empty();
-        }
+        return Optional.empty();
     }
 
-    public boolean existsStudentWithEmail(String email) {
-        return studentRepository.findStudentByEmail(email).isPresent();
+    public boolean notExistsStudentWithEmail(String email) {
+        return studentRepository.findStudentByEmail(email).isEmpty();
     }
 
     public Optional<Student> getStudentById(String id) {
@@ -57,7 +56,7 @@ public class StudentService {
     public Optional<Student> updateStudent(String id, Student student) {
         boolean existingStudent = getStudentById(id).isPresent();
 
-        if (existingStudent && !existsStudentWithEmail(student.getEmail())) {
+        if (existingStudent && notExistsStudentWithEmail(student.getEmail())) {
 
             int isUpdated = studentRepository.updateStudent(student.getFirstName(),
                                                                 student.getLastName(),
