@@ -46,4 +46,12 @@ public class ProfessorController {
                 .map(updatedProfessor -> new ResponseEntity<>(updatedProfessor, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.CONFLICT));
     }
+
+    @DeleteMapping(path = "/delete/{id}")
+    public ResponseEntity deleteProfessorById(@PathVariable("id") String professorId) {
+        if (professorService.deleteProfessorById(professorId)) {
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
+    }
 }
