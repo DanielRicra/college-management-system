@@ -54,7 +54,7 @@ public class ProfessorService {
                         professor.getTelephone(),
                         professor.getDob(),
                         professorId);
-            } else {
+            } else if(professorRepository.findProfessorByEmail(professor.getEmail()).isEmpty()) {
                 result = professorRepository.updateProfessor(professor.getFullName(),
                         professor.getDni(),
                         professor.getAddress(),
@@ -69,5 +69,13 @@ public class ProfessorService {
             }
         }
         return Optional.empty();
+    }
+
+    public boolean deleteProfessorById(String professorId) {
+        if (professorRepository.existsById(professorId)) {
+            professorRepository.deleteById(professorId);
+            return true;
+        }
+        return false;
     }
 }
