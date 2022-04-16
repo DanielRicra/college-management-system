@@ -25,4 +25,15 @@ public interface StudentRepository extends JpaRepository<Student, String> {
                                     LocalDate dob,
                                     String telephone,
                                     String  id);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Student s SET s.firstName=?1, s.lastName=?2, s.address=?3, s.dni=?4, s.dob=?5, telephone=?6 WHERE s.id=?7")
+    int updateStudentDetails(String firstName,
+                      String lastName,
+                      String address,
+                      String dni,
+                      LocalDate dob,
+                      String telephone,
+                      String  id);
 }
