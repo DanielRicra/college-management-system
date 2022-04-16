@@ -44,8 +44,7 @@ public class StudentService {
     }
 
     public boolean deleteStudentById(String id) {
-        boolean existingStudent = studentRepository.findById(id).isPresent();
-        if (existingStudent) {
+        if (studentRepository.existsById(id)) {
             studentRepository.deleteById(id);
             return true;
         }
@@ -54,19 +53,31 @@ public class StudentService {
     }
 
     public Optional<Student> updateStudent(String id, Student student) {
-        boolean existingStudent = getStudentById(id).isPresent();
+        Optional<Student> existingStudent = getStudentById(id);
 
-        if (existingStudent && notExistsStudentWithEmail(student.getEmail())) {
+        if (existingStudent.isPresent()) {
+            int updateResult = 0;
 
-            int isUpdated = studentRepository.updateStudent(student.getFirstName(),
-                                                                student.getLastName(),
-                                                                student.getAddress(),
-                                                                student.getDni(),
-                                                                student.getEmail(),
-                                                                student.getDob(),
-                                                                student.getTelephone(),
-                                                                id);
-            if (isUpdated > 0) {
+            if (existingStudent.get().getEmail().equals(student.getEmail())) {
+                updateResult = studentRepository.updateStudentDetails(student.getFirstName(),
+                        student.getLastName(),
+                        student.getAddress(),
+                        student.getDni(),
+                        student.getDob(),
+                        student.getTelephone(),
+                        id);
+            } else if (studentRepository.findStudentByEmail(student.getEmail()).isEmpty()){
+                updateResult = studentRepository.updateStudent(student.getFirstName(),
+                        student.getLastName(),
+                        student.getAddress(),
+                        student.getDni(),
+                        student.getEmail(),
+                        student.getDob(),
+                        student.getTelephone(),
+                        id);
+            }
+
+            if (updateResult > 0) {
                 student.setId(id);
                 return Optional.of(student);
             }
