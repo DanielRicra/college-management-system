@@ -2,15 +2,10 @@ package com.collegeapp.management.entity;
 
 import org.springframework.data.domain.Persistable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.PostLoad;
-import javax.persistence.PrePersist;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.List;
 
 @Entity
 @Table(name = "professors")
@@ -40,6 +35,9 @@ public class Professor implements Persistable<String> {
 
     @Transient
     private boolean isNew = true;
+
+    @OneToMany(mappedBy = "professor", cascade = {CascadeType.ALL})
+    private List<Classroom> classrooms;
 
     public Professor() {
     }
@@ -123,6 +121,14 @@ public class Professor implements Persistable<String> {
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    public List<Classroom> getClassrooms() {
+        return classrooms;
+    }
+
+    public void setClassrooms(List<Classroom> classrooms) {
+        this.classrooms = classrooms;
     }
 
     @Override
