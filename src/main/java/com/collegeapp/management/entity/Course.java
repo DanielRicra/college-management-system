@@ -1,9 +1,7 @@
 package com.collegeapp.management.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "courses")
@@ -21,6 +19,9 @@ public class Course {
 
     @Column(name = "credits", columnDefinition = "NUMERIC(5)")
     private Integer credits;
+
+    @OneToMany(mappedBy = "course", cascade = {CascadeType.ALL})
+    private List<Classroom> classrooms;
 
     public Course(String id, String name, String description, Integer credits) {
         this.courseId = id;
@@ -62,6 +63,14 @@ public class Course {
 
     public void setCredits(Integer credits) {
         this.credits = credits;
+    }
+
+    public List<Classroom> getClassroom() {
+        return classrooms;
+    }
+
+    public void setClassroom(List<Classroom> classrooms) {
+        this.classrooms = classrooms;
     }
 
     @Override
