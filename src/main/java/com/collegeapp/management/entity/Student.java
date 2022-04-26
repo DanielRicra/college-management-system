@@ -2,15 +2,10 @@ package com.collegeapp.management.entity;
 
 import org.springframework.data.domain.Persistable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.PostLoad;
-import javax.persistence.PrePersist;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.List;
 
 @Entity
 @Table(name = "students")
@@ -43,6 +38,9 @@ public class Student implements Persistable<String> {
 
     @Transient
     private boolean isNew = true;
+
+    @ManyToMany(mappedBy = "students")
+    private List<Classroom> classrooms;
 
     public Student() {
     }

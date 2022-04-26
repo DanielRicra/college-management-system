@@ -2,6 +2,7 @@ package com.collegeapp.management.entity;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table
@@ -25,6 +26,14 @@ public class Classroom {
     @ManyToOne
     @JoinColumn(name = "professor_id", insertable = false, updatable = false)
     private Professor professor;
+
+    @ManyToMany
+    @JoinTable(
+            name = "student_classroom",
+            joinColumns = @JoinColumn(name = "classroom_id"),
+            inverseJoinColumns = @JoinColumn(name = "student_id")
+    )
+    private List<Student> students;
 
     public Course getCourse() {
         return course;
