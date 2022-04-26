@@ -146,6 +146,14 @@ public class Student implements Persistable<String> {
         this.age = age;
     }
 
+    public List<Classroom> getClassrooms() {
+        return classrooms;
+    }
+
+    public void setClassrooms(List<Classroom> classrooms) {
+        this.classrooms = classrooms;
+    }
+
     @Override
     public String toString() {
         return "Student{" +
