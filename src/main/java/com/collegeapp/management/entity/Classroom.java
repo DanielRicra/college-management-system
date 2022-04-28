@@ -20,11 +20,11 @@ public class Classroom {
     private LocalDate ends;
 
     @ManyToOne
-    @JoinColumn(name = "course_id", insertable = false, updatable = false)
+    @JoinColumn(name = "course_id", updatable = false, nullable = false)
     private Course course;
 
     @ManyToOne
-    @JoinColumn(name = "professor_id", insertable = false, updatable = false)
+    @JoinColumn(name = "professor_id", nullable = false, updatable = false)
     private Professor professor;
 
     @ManyToMany
@@ -34,6 +34,16 @@ public class Classroom {
             inverseJoinColumns = @JoinColumn(name = "student_id")
     )
     private List<Student> students;
+
+    public Classroom() {
+    }
+
+    public Classroom(LocalDate starts, LocalDate ends, Course course, Professor professor) {
+        this.starts = starts;
+        this.ends = ends;
+        this.course = course;
+        this.professor = professor;
+    }
 
     public Integer getId() {
         return id;
@@ -63,11 +73,36 @@ public class Classroom {
         this.course = course;
     }
 
+    public String getCourseName(){
+        if (this.course != null && this.course.getName() != null) {
+            return this.course.getName();
+        }
+        else return "";
+    }
+
     public void setProfessor(Professor professor) {
         this.professor = professor;
     }
 
+    public String getProfessorName(){
+        if (this.professor != null && this.professor.getFullName() != null) {
+            return this.professor.getFullName();
+        }
+        else return "";
+    }
+
     public void setStudents(List<Student> students) {
         this.students = students;
+    }
+
+    @Override
+    public String toString() {
+        return "Classroom{" +
+                "id=" + id +
+                ", starts=" + starts +
+                ", ends=" + ends +
+                ", course=" + course +
+                ", professor=" + professor +
+                '}';
     }
 }
