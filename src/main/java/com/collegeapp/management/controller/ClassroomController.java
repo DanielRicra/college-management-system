@@ -1,6 +1,7 @@
 package com.collegeapp.management.controller;
 
 import com.collegeapp.management.entity.Classroom;
+import com.collegeapp.management.entity.projections.ClassroomSummary;
 import com.collegeapp.management.entity.Course;
 import com.collegeapp.management.entity.Professor;
 import com.collegeapp.management.repository.CourseRepository;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -29,6 +31,11 @@ public class ClassroomController {
         this.classroomService = classroomService;
         this.professorRepository = professorRepository;
         this.courseRepository = courseRepository;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ClassroomSummary>> getClassrooms() {
+        return  new ResponseEntity<>(classroomService.getClassrooms(), HttpStatus.OK);
     }
 
     @PostMapping()
