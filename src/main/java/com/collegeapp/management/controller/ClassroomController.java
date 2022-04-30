@@ -38,6 +38,13 @@ public class ClassroomController {
         return  new ResponseEntity<>(classroomService.getClassrooms(), HttpStatus.OK);
     }
 
+    @GetMapping(path = "{id}")
+    public ResponseEntity<Classroom> getClassroomById(@PathVariable("id") Integer classroomId) {
+        return classroomService.getClassroomById(classroomId)
+                .map(classroom -> new ResponseEntity<>(classroom, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
     @PostMapping()
     public ResponseEntity<Classroom> saveClassroom(@RequestBody Classroom classroom,
                                         @RequestParam(name = "course") String courseId,
@@ -54,5 +61,13 @@ public class ClassroomController {
                     .orElse(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @DeleteMapping(path = "/delete/{id}")
+    public ResponseEntity deleteClassroomById(@PathVariable("id") Integer classroomId) {
+        if (classroomService.deleteClassroomById(classroomId)) {
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 }
