@@ -27,7 +27,7 @@ public class Classroom {
     @JoinColumn(name = "professor_id", nullable = false, updatable = false)
     private Professor professor;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
             name = "student_classroom",
             joinColumns = @JoinColumn(name = "classroom_id"),
