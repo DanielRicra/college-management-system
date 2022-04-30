@@ -26,4 +26,17 @@ public class ClassroomService {
     public List<ClassroomSummary> getClassrooms() {
         return classroomRepository.findAllClassrooms();
     }
+
+    public Optional<Classroom> getClassroomById(Integer classroomId) {
+        return classroomRepository.findById(classroomId);
+    }
+
+    public boolean deleteClassroomById(Integer classroomId) {
+        boolean existingClassroom = classroomRepository.findById(classroomId).isPresent();
+        if (existingClassroom){
+            classroomRepository.deleteById(classroomId);
+            return true;
+        }
+        return false;
+    }
 }
