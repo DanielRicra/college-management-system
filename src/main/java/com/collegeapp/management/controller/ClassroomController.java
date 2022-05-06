@@ -39,7 +39,7 @@ public class ClassroomController {
     }
 
     @GetMapping(path = "{id}")
-    public ResponseEntity<Classroom> getClassroomById(@PathVariable("id") Integer classroomId) {
+    public ResponseEntity<ClassroomSummary> getClassroomById(@PathVariable("id") Integer classroomId) {
         return classroomService.getClassroomById(classroomId)
                 .map(classroom -> new ResponseEntity<>(classroom, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));

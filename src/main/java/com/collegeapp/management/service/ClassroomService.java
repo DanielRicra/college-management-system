@@ -27,8 +27,8 @@ public class ClassroomService {
         return classroomRepository.findAllClassrooms();
     }
 
-    public Optional<Classroom> getClassroomById(Integer classroomId) {
-        return classroomRepository.findById(classroomId);
+    public Optional<ClassroomSummary> getClassroomById(Integer classroomId) {
+        return classroomRepository.findClassroomById(classroomId);
     }
 
     public boolean deleteClassroomById(Integer classroomId) {
