@@ -12,6 +12,7 @@ public interface ClassroomSummary {
     interface CourseSummary {
         String getCourseId();
         String getName();
+        String getDescription();
     }
 
     interface ProfessorSummary {
