@@ -35,6 +35,9 @@ public class Classroom {
     )
     private List<Student> students;
 
+    @Transient
+    private Integer studentsNumber;
+
     public Classroom() {
     }
 
@@ -91,8 +94,19 @@ public class Classroom {
         else return "";
     }
 
+    public List<Student> getStudents() {
+        return students;
+    }
+
     public void setStudents(List<Student> students) {
         this.students = students;
+    }
+
+    public Integer getStudentsNumber() {
+        if (this.students == null) {
+            return 0;
+        }
+        return  this.students.size();
     }
 
     @Override
