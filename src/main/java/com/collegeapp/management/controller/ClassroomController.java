@@ -39,7 +39,7 @@ public class ClassroomController {
     }
 
     @GetMapping(path = "{id}")
-    public ResponseEntity<ClassroomSummary> getClassroomById(@PathVariable("id") Integer classroomId) {
+    public ResponseEntity<Classroom> getClassroomById(@PathVariable("id") Integer classroomId) {
         return classroomService.getClassroomById(classroomId)
                 .map(classroom -> new ResponseEntity<>(classroom, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -69,5 +69,13 @@ public class ClassroomController {
             return new ResponseEntity(HttpStatus.OK);
         }
         return new ResponseEntity(HttpStatus.NOT_FOUND);
+    }
+
+    @PostMapping(path = "/student/{classroomId}/{studentId}")
+    public ResponseEntity<Classroom> addStudentToClassroom(@PathVariable("classroomId") Integer classroomId,
+                                                           @PathVariable("studentId") String studentId) {
+        return classroomService.addStudent(classroomId, studentId)
+                .map(classroom -> new ResponseEntity<>(classroom, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }
