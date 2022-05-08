@@ -6,6 +6,7 @@ public interface ClassroomSummary {
     public Integer getId();
     public LocalDate getStarts();
     public LocalDate getEnds();
+    public Integer getStudentsNumber();
     public CourseSummary getCourse();
     public ProfessorSummary getProfessor();
 
