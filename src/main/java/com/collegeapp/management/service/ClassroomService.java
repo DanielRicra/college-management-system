@@ -1,8 +1,10 @@
 package com.collegeapp.management.service;
 
 import com.collegeapp.management.entity.Classroom;
+import com.collegeapp.management.entity.Student;
 import com.collegeapp.management.entity.projections.ClassroomSummary;
 import com.collegeapp.management.repository.ClassroomRepository;
+import com.collegeapp.management.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +15,12 @@ import java.util.Optional;
 public class ClassroomService {
 
     private final ClassroomRepository classroomRepository;
+    private final StudentRepository studentRepository;
 
     @Autowired
-    public ClassroomService(ClassroomRepository classroomRepository) {
+    public ClassroomService(ClassroomRepository classroomRepository, StudentRepository studentRepository) {
         this.classroomRepository = classroomRepository;
+        this.studentRepository = studentRepository;
     }
 
     public Optional<Classroom> saveClassroom(Classroom classroom) {
@@ -27,8 +31,8 @@ public class ClassroomService {
         return classroomRepository.findAllClassrooms();
     }
 
-    public Optional<ClassroomSummary> getClassroomById(Integer classroomId) {
-        return classroomRepository.findClassroomById(classroomId);
+    public Optional<Classroom> getClassroomById(Integer classroomId) {
+        return classroomRepository.findById(classroomId);
     }
 
     public boolean deleteClassroomById(Integer classroomId) {
@@ -38,5 +42,19 @@ public class ClassroomService {
             return true;
         }
         return false;
+    }
+
+    public Optional<Classroom> addStudent(Integer classroomId, String studentId) {
+
+        Optional<Classroom> optionalClassroom = classroomRepository.findById(classroomId);
+        Optional<Student> optionalStudent = studentRepository.findById(studentId);
+
+        if (optionalClassroom.isPresent() && optionalStudent.isPresent()) {
+            Classroom classroom = optionalClassroom.get();
+            classroom.getStudents().add(optionalStudent.get());
+            return Optional.of(classroomRepository.save(classroom));
+        }
+
+        return Optional.empty();
     }
 }
