@@ -42,6 +42,9 @@ public class Student implements Persistable<String> {
     @ManyToMany(mappedBy = "students")
     private List<Classroom> classrooms;
 
+    @OneToMany(mappedBy = "studentId", cascade = {CascadeType.ALL})
+    private List<StudentExam> exams;
+
     public Student() {
     }
 
@@ -148,6 +151,14 @@ public class Student implements Persistable<String> {
 
     public void setClassrooms(List<Classroom> classrooms) {
         this.classrooms = classrooms;
+    }
+
+    public List<StudentExam> getExams() {
+        return exams;
+    }
+
+    public void setExams(List<StudentExam> exams) {
+        this.exams = exams;
     }
 
     @Override
